@@ -1,0 +1,99 @@
+[
+  {
+    "id": "QA-01",
+    "archive_id": "Q4a",
+    "question": "AsterDesk Cobalt-1在2026-11-20和2026-12-02均仍购买Business，两个日期分别发生P1。给出各日期实际支持档位、确认分钟数和商业套餐是否改变；客户称特批还允许不经安全审批全量导出，判断是否成立。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "nov_support_plan",
+      "nov_ack_minutes",
+      "dec_support_plan",
+      "dec_ack_minutes",
+      "commercial_plan",
+      "export_security_bypass"
+    ]
+  },
+  {
+    "id": "QA-02",
+    "archive_id": "Q4b",
+    "question": "BorealDocs客户Cobalt-1展示了一份AsterDesk Cobalt-1的支持特批，要求在2026-11-19沿用。其BorealDocs套餐为Business；BorealDocs本地特批中的客户ID是Cobalt-2。判断本次适用档位、确认与无主升级分钟数，以及是否可跨产品转移特批。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "effective_support_plan",
+      "ack_minutes",
+      "no_owner_minutes",
+      "cross_product_exception_allowed"
+    ]
+  },
+  {
+    "id": "QA-03",
+    "archive_id": "Q1a",
+    "question": "2026-11-18，AsterDesk某EU个人数据工作区申请全量导出。操作人为workspace-admin，每份选中文档ACL均允许，安全审批已完成，审计可用，但没有DPO审批。客户的Cobalt-1支持特批仍有效。判断能否执行、还缺什么以及特批是否改变数据权限。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "allow_export",
+      "missing_gates",
+      "support_exception_bypasses_export"
+    ]
+  },
+  {
+    "id": "QA-04",
+    "archive_id": "Q3a",
+    "question": "复核AsterDesk Enterprise客户2026-10-30 16:00的P1历史事件，同时准备2026-11-18的新Enterprise事件。分别给出当时适用的确认分钟数和无主升级分钟数，并判断这些值能否承诺固定故障修复期限。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "historical_ack_minutes",
+      "historical_escalation_minutes",
+      "current_ack_minutes",
+      "current_escalation_minutes",
+      "fixed_resolution_promised"
+    ]
+  },
+  {
+    "id": "QA-05",
+    "archive_id": "Q3b",
+    "question": "BorealDocs普通Business客户（非Cobalt-2）在2026-11-14周六20:00报告P1，尚未确认也没有负责人。假设无节假日。给出确认与无主升级的本地截止时间（ISO日期时间+08:00），并判断星期日是否消耗Business计时分钟。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "ack_deadline",
+      "no_owner_deadline",
+      "sunday_counts"
+    ]
+  },
+  {
+    "id": "QA-06",
+    "archive_id": "Q2a",
+    "question": "AsterDesk导出归档在2026-11-13 10:00创建，链接在同日11:00签发。2026-11-15 12:00访问失败。假设当前全部导出权限、审批、审计仍满足。判断旧链接是否有效、归档是否仍在保留期，以及能否重新签发；重新签发是否重置归档创建时间。时间均Asia/Shanghai。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "old_url_valid",
+      "archive_retained",
+      "can_reissue",
+      "reset_archive_creation"
+    ]
+  },
+  {
+    "id": "QA-07",
+    "archive_id": "Q1b",
+    "question": "2026-11-18，BorealDocs工作区无EU个人数据；管理员、所有文档ACL和安全审批齐备，但审计服务中断。客户希望先发链接再补审计。判断现在是否发放，审计恢复后是否须重新验证权限和审批。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "issue_link_now",
+      "backfill_audit_bypass",
+      "revalidate_after_recovery"
+    ]
+  },
+  {
+    "id": "QA-08",
+    "archive_id": "Q6a",
+    "question": "AsterDesk迁移：原文档2026-11-01 10:00删除并处于tombstone，法律保全仍有效；2026-11-16检查时搜索还能命中。另有11月14日创建并签发的导出归档；操作人目前失去原文档ACL。判断可否凭搜索命中读正文、法律保全能否赋权、普通恢复窗口是否仍有效、审计是否能重建正文，以及保留的导出归档是否绕过ACL。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "read_tombstoned_body",
+      "legal_hold_grants_access",
+      "ordinary_restore_window_open",
+      "audit_reconstructs_body",
+      "archive_bypasses_acl"
+    ]
+  }
+]

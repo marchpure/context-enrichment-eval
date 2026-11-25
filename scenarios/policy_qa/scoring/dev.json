@@ -1,0 +1,110 @@
+{
+  "QA-01": {
+    "expected": {
+      "nov_support_plan": "Enterprise",
+      "nov_ack_minutes": 14,
+      "dec_support_plan": "Business",
+      "dec_ack_minutes": 39,
+      "commercial_plan": "Business",
+      "export_security_bypass": false
+    },
+    "source_paths": [
+      "products/AsterDesk/10_service_current.md",
+      "products/AsterDesk/50_decision_session.md",
+      "shared/01_access_and_export.md"
+    ]
+  },
+  "QA-02": {
+    "expected": {
+      "effective_support_plan": "Business",
+      "ack_minutes": 45,
+      "no_owner_minutes": 20,
+      "cross_product_exception_allowed": false
+    },
+    "source_paths": [
+      "products/BorealDocs/00_scope.md",
+      "products/BorealDocs/10_service_current.md",
+      "products/BorealDocs/50_decision_session.md",
+      "products/AsterDesk/50_decision_session.md",
+      "shared/00_authority.md"
+    ]
+  },
+  "QA-03": {
+    "expected": {
+      "allow_export": false,
+      "missing_gates": [
+        "dpo"
+      ],
+      "support_exception_bypasses_export": false
+    },
+    "source_paths": [
+      "shared/01_access_and_export.md",
+      "products/AsterDesk/20_exports_current.md",
+      "products/AsterDesk/50_decision_session.md"
+    ]
+  },
+  "QA-04": {
+    "expected": {
+      "historical_ack_minutes": 31,
+      "historical_escalation_minutes": 15,
+      "current_ack_minutes": 14,
+      "current_escalation_minutes": 7,
+      "fixed_resolution_promised": false
+    },
+    "source_paths": [
+      "products/AsterDesk/archive/10_service_v2.md",
+      "products/AsterDesk/10_service_current.md",
+      "shared/03_incident_definitions.md"
+    ]
+  },
+  "QA-05": {
+    "expected": {
+      "ack_deadline": "2026-11-16T09:45:00+08:00",
+      "no_owner_deadline": "2026-11-16T09:20:00+08:00",
+      "sunday_counts": false
+    },
+    "source_paths": [
+      "products/BorealDocs/10_service_current.md",
+      "shared/00_authority.md",
+      "shared/03_incident_definitions.md"
+    ]
+  },
+  "QA-06": {
+    "expected": {
+      "old_url_valid": false,
+      "archive_retained": true,
+      "can_reissue": true,
+      "reset_archive_creation": false
+    },
+    "source_paths": [
+      "products/AsterDesk/20_exports_current.md",
+      "shared/02_content_lifecycle.md"
+    ]
+  },
+  "QA-07": {
+    "expected": {
+      "issue_link_now": false,
+      "backfill_audit_bypass": false,
+      "revalidate_after_recovery": true
+    },
+    "source_paths": [
+      "shared/01_access_and_export.md",
+      "products/BorealDocs/20_exports_current.md"
+    ]
+  },
+  "QA-08": {
+    "expected": {
+      "read_tombstoned_body": false,
+      "legal_hold_grants_access": false,
+      "ordinary_restore_window_open": false,
+      "audit_reconstructs_body": false,
+      "archive_bypasses_acl": false
+    },
+    "source_paths": [
+      "products/AsterDesk/30_lifecycle_current.md",
+      "products/AsterDesk/20_exports_current.md",
+      "shared/02_content_lifecycle.md",
+      "shared/01_access_and_export.md"
+    ]
+  }
+}

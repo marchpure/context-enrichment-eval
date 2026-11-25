@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ANA-01",
+    "archive_id": "A3a",
+    "question": "计算合成执行资产a覆盖周期的GPU保有资源账号去重数，使用源指标的账号、计费、时刻、产品与型号条件。输出单列active_accounts；区分周期去重指标与场景日均用户展示。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-02",
+    "archive_id": "A4a",
+    "question": "计算2026年11月TOS月度实际收入。使用合成执行资产a，先确定收入表可用物理分区，再核对收入类型和产品口径；输出单列revenue_amount，不把月度实际收入自动叫作已确认的订阅MRR。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-03",
+    "archive_id": "A4b",
+    "question": "计算2026年12月GPU月度实际收入，使用合成执行资产b并核对产品集合、二级产品线和可用分区。输出单列revenue_amount，负数与小数按原始金额参与计算。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-04",
+    "archive_id": "A1a",
+    "question": "计算2026年11月GPU Top20客户日均用量和占比，按D2来源选择可覆盖全部候选的路线。输出两列topn_usage、topn_percent。使用合成执行资产a，从资产登记读取表名。解释是否等价于稳定主客户口径。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-05",
+    "archive_id": "A2a",
+    "question": "对合成执行资产a的两期完整30日预过滤聚合输入，输出全部稳定账号×计费方式的前期日均、当期日均和差值；必须保留单边账号。SQL列account_id、pay_type、previous_avg、current_avg、delta，按前两列排序。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-06",
+    "archive_id": "A6a",
+    "question": "新产品沿用历史最小聚合方法：接口没有分页令牌，一个批次独立计数8200个稳定键，limit=8001且实际返回8001行。团队打算去重后视为完整并计算Top5。decision输出sql、can_publish_top5、complete_coverage、can_invent_offset_pagination，说明适用的完整性门禁。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-07",
+    "archive_id": "A5a",
+    "question": "经营报告要求直接给出EIP资源用量波动与客户Top10占比的确定性结论。按现有D2正式定义判断是否可交付。decision输出sql、eip_usage_change_supported、eip_top10_formally_defined；对缺口给出下一步。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-08",
+    "archive_id": "A5b",
+    "question": "经营报告准备把VKE账号集中度直接与其他产品作统一主客户对比，同时把月度实际收入自动解释为订阅MRR。当前没有补充主客户映射或Owner确认。decision输出sql、vke_account_equals_main_customer、subscription_mrr_confirmed；说明可保留哪些事实。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  }
+]

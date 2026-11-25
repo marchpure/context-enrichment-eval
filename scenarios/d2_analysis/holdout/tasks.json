@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ANA-09",
+    "archive_id": "A1b",
+    "question": "计算2026年12月30日快照的GPU Top5客户用量与全产品占比。使用合成执行资产b，选择D2规则适用的路径，输出topn_usage、topn_percent，避免其他产品和旧快照混入。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-10",
+    "archive_id": "A2b",
+    "question": "对合成执行资产b的两期完整30日预过滤聚合输入，输出全部稳定账号×计费方式的前期日均、当期日均和差值；必须保留单边账号。SQL列account_id、pay_type、previous_avg、current_avg、delta，按前两列排序。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-11",
+    "archive_id": "A3b",
+    "question": "计算合成执行资产b覆盖周期的GPU保有资源账号去重数，使用源指标的账号、计费、时刻、产品与型号条件。输出单列active_accounts；区分周期去重指标与场景日均用户展示。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  },
+  {
+    "id": "ANA-12",
+    "archive_id": "A6b",
+    "question": "新产品两期全局日分区完整、数值非空、所有批次计数和总量对账通过；账号X只在当期有事实。团队要将其前期解释为无事实并赋0。decision输出sql、missing_side_can_be_zero、partial_result_can_be_zero、threshold_8000_is_platform_guarantee。只评估计算前提，无需重查数据。",
+    "response_contract": "输出JSON decision，其中sql为可执行SQLite SQL（无法合法计算时null）；explanation说明规则、边界及缺口；evidence为实际读取的连续引文[{path,quote,fields}]。用量与日均保留4位，占比为0..100保留2位，金额不提前舍入。"
+  }
+]

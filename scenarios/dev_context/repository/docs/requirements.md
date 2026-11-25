@@ -1,0 +1,2 @@
+# Maintenance work boundaries
+Current approved contracts govern behavior; a source implementation that disagrees may be defective. Archived descriptions explain old behavior. Session proposals and rejected ideas are not accepted features. Changes must preserve unrelated behavior and public entry points. Feature work is limited to the explicitly approved scope; no network or production credentials are required.

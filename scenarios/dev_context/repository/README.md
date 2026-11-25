@@ -1,0 +1,3 @@
+# Cedar transport consumer — synthetic repository
+This controlled offline repository models a multi-module consumer pipeline. It is not a production service or a measurement of psf/requests. Public entry points are Client.fetch, Client.submit and Client.request. Injected adapters return response objects with status, location and headers. No real network is needed.
+Read approved contracts in docs/current and recorded decisions in docs/sessions. docs/archive is historical and has no authority for current requests. Code may contain maintenance defects. Public smoke tests establish only success-path behavior; task acceptance may exercise boundary conditions.

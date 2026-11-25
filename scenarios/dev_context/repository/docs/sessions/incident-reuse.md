@@ -1,0 +1,3 @@
+# Synthetic incident review — confirmed lessons
+An upload helper closed a caller's file and a second operation failed. Confirmed root cause: crossing the ownership boundary. Apply caller-ownership preservation to both read and submission entry points; do not merely catch the later closed-file exception.
+A replay helper reset a partially consumed stream to byte zero, unexpectedly replaying a prefix that the caller intentionally skipped. Confirmed fix principle: capture the request-start position and rewind to that offset. The same mechanism can recur on another endpoint. The meeting rejected a general workaround that made every request retryable.

@@ -1,0 +1,2 @@
+# Credential isolation — APPROVED, revision 4
+Origin is scheme + case-normalized host + effective port. https defaults to 443 and http to 80; explicit and implicit default ports are equal. Scheme changes and nondefault port changes count as cross-origin, even on the same hostname. Cross-origin redirects strip Authorization and Cookie case-insensitively. Preserve ordinary headers. Same-origin redirects retain credentials. Never mutate the original caller mapping.

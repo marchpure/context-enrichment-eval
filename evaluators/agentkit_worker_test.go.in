@@ -1,0 +1,171 @@
+package enrichment_test
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"strings"
+	"testing"
+	"time"
+
+	contract "code.byted.org/agentkit/context/internal/midgard/domain/enrichment"
+	resourcescope "code.byted.org/agentkit/context/internal/midgard/domain/scope"
+	"code.byted.org/agentkit/context/internal/midgard/requestauth"
+	jobs "code.byted.org/agentkit/context/internal/midgard/usecase/task"
+	"code.byted.org/agentkit/context/internal/midgarddata/usecase/artifact"
+	e "code.byted.org/agentkit/context/internal/midgardworker/enrichment"
+	"code.byted.org/agentkit/context/internal/midgardworker/enrichment/codex"
+	wire "code.byted.org/agentkit/context/pkg/dataprotocol"
+)
+
+type evalSource struct {
+	Path, Text, Revision string
+}
+
+func TestExternalEnrichmentEvaluation(t *testing.T) {
+	path := os.Getenv("ENRICH_EVAL_INPUT")
+	if path == "" {
+		t.Skip("external benchmark input absent")
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var sources []evalSource
+	if err = json.Unmarshal(raw, &sources); err != nil {
+		t.Fatal(err)
+	}
+
+	sc := resourcescope.Scope{AccountID: "eval-tenant", TenantID: "eval-tenant", WorkspaceID: "eval-local"}
+	principal := fixturePrincipal(sc)
+	ctx, cancel := context.WithTimeout(resourcescope.WithContext(requestauth.WithPrincipal(context.Background(), principal), sc), 35*time.Minute)
+	defer cancel()
+	actor, err := e.FreezeActorBinding(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	auth := &fixturePolicy{currentActor: &principal, frozenActor: actor}
+	provider, err := codex.New(codex.Config{
+		Binary: os.Getenv("ENRICH_EVAL_CODEX"), Model: os.Getenv("ENRICH_EVAL_MODEL"),
+		ProviderURL: os.Getenv("OPENAI_BASE_URL"), ThinkingMode: "disabled",
+		Credentials: staticCodexCreds{key: os.Getenv("OPENAI_API_KEY")}, Timeout: 3 * time.Minute,
+	}, auth)
+	if err != nil {
+		t.Fatal("provider initialization:", err)
+	}
+	worker, err := e.NewWorker(e.Config{
+		CoreEnabled: true, RouteTableEvidence: true,
+		Actors: auth, Authority: auth, Redaction: auth, Model: provider,
+		MaxCandidates: 24, MaxTokens: 65536,
+		ProgressReporter: func(_ context.Context, snap e.StageProgressSnapshot) {
+			fmt.Printf("stage=%s items=%d/%d skips=%d tokens=%d\n", snap.Stage, snap.CompletedItems, snap.TotalItems, snap.SkippedCount, snap.TokensUsed)
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	domain := "domain-synthetic"
+	run := "run-synthetic"
+	manifest := contract.EnrichmentSourceManifest{
+		Version:  contract.EnrichmentSourceManifestVersion,
+		DomainID: domain, BaseDraftRevision: 1, FrozenAt: time.Date(2026, 11, 25, 0, 0, 0, 0, time.UTC),
+	}
+	var records bytes.Buffer
+	var bindings []jobs.ArtifactSourceRef
+	sourceMap := make(map[string]evalSource)
+	sourceByEntry := make(map[string]evalSource)
+	for i, src := range sources {
+		suffix := strings.TrimPrefix(e.TextHash(src.Path), "sha256:")[:16]
+		entry := "source-" + suffix
+		evID := "evidence-" + suffix
+		revision := src.Revision
+		text := "# " + src.Path + "\n\n" + src.Text
+		kind, sourceType := "DOC", "FEISHU_WIKI"
+		coverage := e.Coverage{Mode: "BOUNDED_POINTS_SLICE", Partial: true, SelectedPointIDs: []string{"p1"}, TotalPointCount: 1}
+		locator := e.Locator{AnchorType: "Section", AnchorKey: "p1"}
+		if strings.HasSuffix(src.Path, ".schema.md") {
+			kind, sourceType, text = "TABLE", "POSTGRESQL", src.Text
+			coverage = e.Coverage{Mode: "FULL_SCHEMA_AND_SAFE_PROFILE", SelectedPointIDs: []string{}}
+			locator = e.Locator{AnchorType: "EntryRoot"}
+		}
+		srcRef := jobs.ArtifactSourceRef{
+			ResourceID: "eval-resource", OriginEntryID: entry, SourceRevision: revision,
+			ContentHash: e.TextHash(text), SourceBindingFingerprint: e.TextHash("fixture-" + entry),
+		}
+		ev := e.Evidence{ID: evID, EntryID: entry, Kind: kind, Source: srcRef, Text: text,
+			TextHash: e.TextHash(text), Coverage: coverage, Locator: locator}
+		if err = json.NewEncoder(&records).Encode(ev); err != nil {
+			t.Fatal(err)
+		}
+		bindings = append(bindings, srcRef)
+		manifest.Sources = append(manifest.Sources, contract.EnrichmentManifestSource{
+			CoreRef: &wire.Ref{ID: entry, Revision: int64(i + 1)}, EntryID: entry,
+			SourceType: sourceType, AssetKind: kind, ResourceID: srcRef.ResourceID,
+			OriginEntryID: srcRef.OriginEntryID, SourceRevision: revision, ContentHash: srcRef.ContentHash,
+			SourceBindingFingerprint: srcRef.SourceBindingFingerprint, EvidenceReadScope: coverage.Mode,
+		})
+		sourceMap[evID] = src
+		sourceByEntry[entry] = src
+	}
+	raw, err = json.Marshal(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest, err := contract.EnrichmentSourceManifestDigest(raw)
+	if err != nil {
+		t.Fatal("source manifest:", err)
+	}
+	scope := jobs.ArtifactScope{AccountID: sc.AccountID, TenantID: sc.TenantID, WorkspaceID: sc.WorkspaceID, RunID: run, AttemptNo: 1, FencingToken: 1}
+	policy := jobs.ArtifactOutputPolicy{
+		Scope: scope, Type: jobs.DomainEnrichment, RecordSchema: e.InputSchema,
+		RedactionPolicyVersion: "synthetic-v1", SourceManifestDigest: digest,
+		Bucket: "eval-bucket", KeyPrefix: "runs/", ValidatorVersion: "v1", PolicyDecisionID: "fixture",
+		MaxParts: 1, MaxBytes: 4 << 20, MaxRecords: 256, SourceBindings: bindings,
+	}
+	validator, err := artifact.NewArtifactValidator(jobs.ArtifactValidatorConfig{
+		Reader: fixtureReader{raw: records.Bytes()}, Authority: fixtureArtifactAuthority{policy: policy},
+		Redaction: fixtureArtifactDLP{}, Schemas: map[string]jobs.ArtifactRecordSchema{e.InputSchema: e.EvidenceSchema{}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	verified, err := validator.Verify(ctx, jobs.ArtifactManifest{
+		Version: jobs.ArtifactManifestV1, Scope: scope, Type: jobs.DomainEnrichment, RecordSchema: e.InputSchema,
+		RedactionPolicyVersion: policy.RedactionPolicyVersion, SourceManifestDigest: digest,
+		TotalBytes: int64(records.Len()), TotalRecords: int64(len(sources)),
+		Parts: []jobs.ArtifactPart{{PartNo: 1,
+			Object:   jobs.ArtifactObjectRef{Bucket: policy.Bucket, Key: "runs/input.ndjson", VersionID: "v1"},
+			SHA256:   strings.TrimPrefix(e.TextHash(records.String()), "sha256:"),
+			ByteSize: int64(records.Len()), RecordCount: int64(len(sources)),
+		}},
+	})
+	if err != nil {
+		t.Fatal("evidence verification:", err)
+	}
+	start := time.Now()
+	result, runErr := worker.Run(ctx, e.Request{
+		ActorBinding: actor, Scope: sc, RunID: run, DomainID: domain, ActorID: principal.SubjectID,
+		ModelID: provider.ModelID(), AttemptNo: 1, FencingToken: 1, DraftRevision: 1,
+		SourceManifestHash: digest, InputArtifactHash: verified.ManifestHash(), DataPolicyRef: "fixture-policy",
+		Instruction: "从冻结来源提炼可回源的可消费知识，保留实体归属、资格条件、生效版本、物理列与边界。",
+	}, verified)
+	out := map[string]any{
+		"worker": result, "source_by_evidence": sourceMap, "source_by_entry": sourceByEntry,
+		"source_manifest": manifest, "elapsed_ms": time.Since(start).Milliseconds(),
+	}
+	if runErr != nil {
+		out["error"] = runErr.Error()
+	}
+	body, err := json.MarshalIndent(out, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(os.Getenv("ENRICH_EVAL_OUTPUT"), body, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if runErr != nil {
+		t.Fatal("worker run:", runErr)
+	}
+}

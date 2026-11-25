@@ -1,0 +1,522 @@
+{
+  "ANA-01": {
+    "variant": "a",
+    "operation": "active",
+    "expected_decision": null,
+    "expected_by_fixture": {
+      "normal": [
+        [
+          35
+        ]
+      ],
+      "boundary": [
+        [
+          38
+        ]
+      ],
+      "adversarial": [
+        [
+          88
+        ]
+      ]
+    },
+    "source_paths": [
+      "gpu_active_users_base.yaml.md",
+      "scope.md"
+    ],
+    "reference_sql": {
+      "normal": "SELECT COUNT(DISTINCT account_id) FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器')",
+      "boundary": "SELECT COUNT(DISTINCT account_id) FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器')",
+      "adversarial": "SELECT COUNT(DISTINCT account_id) FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器')"
+    }
+  },
+  "ANA-02": {
+    "variant": "a",
+    "operation": "tos",
+    "expected_decision": null,
+    "expected_by_fixture": {
+      "normal": [
+        [
+          "19436.49"
+        ]
+      ],
+      "boundary": [
+        [
+          "19311.24"
+        ]
+      ],
+      "adversarial": [
+        [
+          "19314.74"
+        ]
+      ]
+    },
+    "source_paths": [
+      "revenue_month_base.yaml.md",
+      "subproduct_revenue_tos.yaml.md",
+      "scope.md"
+    ],
+    "reference_sql": {
+      "normal": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-11-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp='存储(含BP)' AND subproduct IN ('对象存储','Torch Object Storage')",
+      "boundary": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-11-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp='存储(含BP)' AND subproduct IN ('对象存储','Torch Object Storage')",
+      "adversarial": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-11-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp='存储(含BP)' AND subproduct IN ('对象存储','Torch Object Storage')"
+    }
+  },
+  "ANA-03": {
+    "variant": "b",
+    "operation": "gpu_income",
+    "expected_decision": null,
+    "expected_by_fixture": {
+      "normal": [
+        [
+          "11012.79"
+        ]
+      ],
+      "boundary": [
+        [
+          "11044.54"
+        ]
+      ],
+      "adversarial": [
+        [
+          "11067.04"
+        ]
+      ]
+    },
+    "source_paths": [
+      "revenue_month_base.yaml.md",
+      "subproduct_revenue_gpu.yaml.md"
+    ],
+    "reference_sql": {
+      "normal": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-12-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp IN ('基础深度学习(含BP)','计算(含BP)') AND subproduct IN ('GPU Compute Service','GPU云服务器','高性能计算GPU云服务器','High Performance Compute Service','机器学习平台-公有云','MLP')",
+      "boundary": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-12-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp IN ('基础深度学习(含BP)','计算(含BP)') AND subproduct IN ('GPU Compute Service','GPU云服务器','高性能计算GPU云服务器','High Performance Compute Service','机器学习平台-公有云','MLP')",
+      "adversarial": "SELECT SUM(revenue_amount) FROM revenue WHERE p_date=(SELECT MAX(p_date) FROM revenue) AND billing_month='2026-12-01' AND income_type IN ('外部收入','内部收入-外') AND secondary_product_line_bp IN ('基础深度学习(含BP)','计算(含BP)') AND subproduct IN ('GPU Compute Service','GPU云服务器','高性能计算GPU云服务器','High Performance Compute Service','机器学习平台-公有云','MLP')"
+    }
+  },
+  "ANA-04": {
+    "variant": "a",
+    "operation": "top20",
+    "expected_decision": null,
+    "expected_by_fixture": {
+      "normal": [
+        [
+          2645.5333,
+          84.32
+        ]
+      ],
+      "boundary": [
+        [
+          2649.6333,
+          84.21
+        ]
+      ],
+      "adversarial": [
+        [
+          2691.3,
+          84.14
+        ]
+      ]
+    },
+    "source_paths": [
+      "gpu_usage_base.yaml.md",
+      "gpu_topn_customer_ratio.yaml.md",
+      "scope.md"
+    ],
+    "reference_sql": {
+      "normal": "WITH grouped AS (SELECT p_date,customer_short_name,SUM(instance_gpu_num) AS amount FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器') GROUP BY p_date,customer_short_name),\n ranked AS (SELECT *,ROW_NUMBER() OVER(PARTITION BY p_date ORDER BY amount DESC) AS rk FROM grouped),\n daily AS (SELECT p_date,SUM(amount) AS total,SUM(CASE WHEN rk<=20 THEN amount ELSE 0 END) AS topn FROM ranked GROUP BY p_date)\n SELECT ROUND(AVG(topn),4),ROUND(AVG(topn)*100.0/AVG(total),2) FROM daily",
+      "boundary": "WITH grouped AS (SELECT p_date,customer_short_name,SUM(instance_gpu_num) AS amount FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器') GROUP BY p_date,customer_short_name),\n ranked AS (SELECT *,ROW_NUMBER() OVER(PARTITION BY p_date ORDER BY amount DESC) AS rk FROM grouped),\n daily AS (SELECT p_date,SUM(amount) AS total,SUM(CASE WHEN rk<=20 THEN amount ELSE 0 END) AS topn FROM ranked GROUP BY p_date)\n SELECT ROUND(AVG(topn),4),ROUND(AVG(topn)*100.0/AVG(total),2) FROM daily",
+      "adversarial": "WITH grouped AS (SELECT p_date,customer_short_name,SUM(instance_gpu_num) AS amount FROM gpu WHERE p_date BETWEEN '2026-11-01' AND '2026-11-30' AND pay_type IN ('PostPaid','PrePaid','Spot') AND (account_tag='外部账号' OR income_type IN ('外部收入','内部收入-外') OR account_id='9993') AND p_hour='23' AND instance_gpu_model IN ('AMD MI308x-192G','AMD MI308x-192G-80CU','Bytedance jiuhuashan','CAMBRICON MLU580X6','CAMBRICON MLU590 M9DK','FF40','FF45D','HUAWEI Ascend 910b','HUAWEI Ascend 910c','Iluvatar BI-V150','NVIDIA A10','NVIDIA A30','NVIDIA A40','NVIDIA A800-SXM4-40GB','NVIDIA A800-SXM4-80GB','NVIDIA GeForce RTX 4090','NVIDIA GeForce RTX 4090 D','NVIDIA H100-SXM5-80GB','NVIDIA H20-3e','NVIDIA H20-SXM5-96GB','NVIDIA H800-SXM5-80GB','NVIDIA L20','NVIDIA L4','NVIDIA L40','NVIDIA L40S','NVIDIA V100-PCIE-32GB','Tesla A100 80G','Tesla T4','Tesla V100','4090','4090D','910b','A10','A100','A30','A800','H100','H20','L20','L4','NVIDIA T4','T4','V100') AND product IN ('GPU Compute Service','GPU云服务器','机器学习平台-公有云','高性能计算GPU云服务器','云服务器') GROUP BY p_date,customer_short_name),\n ranked AS (SELECT *,ROW_NUMBER() OVER(PARTITION BY p_date ORDER BY amount DESC) AS rk FROM grouped),\n daily AS (SELECT p_date,SUM(amount) AS total,SUM(CASE WHEN rk<=20 THEN amount ELSE 0 END) AS topn FROM ranked GROUP BY p_date)\n SELECT ROUND(AVG(topn),4),ROUND(AVG(topn)*100.0/AVG(total),2) FROM daily"
+    }
+  },
+  "ANA-05": {
+    "variant": "a",
+    "operation": "delta",
+    "expected_decision": null,
+    "expected_by_fixture": {
+      "normal": [
+        [
+          "8001",
+          "PrePaid",
+          37.0333,
+          41.5,
+          4.4667
+        ],
+        [
+          "8002",
+          "PrePaid",
+          55.3333,
+          48.1333,
+          -7.2
+        ],
+        [
+          "8003",
+          "PrePaid",
+          47.9333,
+          40.8333,
+          -7.1
+        ],
+        [
+          "8004",
+          "PrePaid",
+          45.9333,
+          49.3333,
+          3.4
+        ],
+        [
+          "8005",
+          "PrePaid",
+          41.4667,
+          52.3,
+          10.8333
+        ],
+        [
+          "8006",
+          "PrePaid",
+          47.4333,
+          52.2667,
+          4.8333
+        ],
+        [
+          "8007",
+          "PrePaid",
+          48.0667,
+          53.5,
+          5.4333
+        ],
+        [
+          "8008",
+          "PrePaid",
+          43.4667,
+          47.7667,
+          4.3
+        ],
+        [
+          "8009",
+          "PrePaid",
+          41.6667,
+          41.0333,
+          -0.6333
+        ],
+        [
+          "8010",
+          "PrePaid",
+          43.3667,
+          44.3667,
+          1.0
+        ],
+        [
+          "8011",
+          "PrePaid",
+          44.4,
+          50.3333,
+          5.9333
+        ],
+        [
+          "8012",
+          "PrePaid",
+          37.3333,
+          41.7667,
+          4.4333
+        ],
+        [
+          "8013",
+          "PrePaid",
+          48.0667,
+          42.5333,
+          -5.5333
+        ],
+        [
+          "8014",
+          "PrePaid",
+          46.0333,
+          54.9333,
+          8.9
+        ]
+      ],
+      "boundary": [
+        [
+          "8001",
+          "PrePaid",
+          37.0333,
+          41.5,
+          4.4667
+        ],
+        [
+          "8002",
+          "PrePaid",
+          55.3333,
+          48.1333,
+          -7.2
+        ],
+        [
+          "8003",
+          "PrePaid",
+          47.9333,
+          40.8333,
+          -7.1
+        ],
+        [
+          "8004",
+          "PrePaid",
+          45.9333,
+          49.3333,
+          3.4
+        ],
+        [
+          "8005",
+          "PrePaid",
+          41.4667,
+          52.3,
+          10.8333
+        ],
+        [
+          "8006",
+          "PrePaid",
+          47.4333,
+          52.2667,
+          4.8333
+        ],
+        [
+          "8007",
+          "PrePaid",
+          48.0667,
+          53.5,
+          5.4333
+        ],
+        [
+          "8008",
+          "PrePaid",
+          43.4667,
+          47.7667,
+          4.3
+        ],
+        [
+          "8009",
+          "PrePaid",
+          41.6667,
+          41.0333,
+          -0.6333
+        ],
+        [
+          "8010",
+          "PrePaid",
+          43.3667,
+          44.3667,
+          1.0
+        ],
+        [
+          "8011",
+          "PrePaid",
+          44.4,
+          50.3333,
+          5.9333
+        ],
+        [
+          "8012",
+          "PrePaid",
+          37.3333,
+          41.7667,
+          4.4333
+        ],
+        [
+          "8013",
+          "PrePaid",
+          48.0667,
+          42.5333,
+          -5.5333
+        ],
+        [
+          "8014",
+          "PrePaid",
+          46.0333,
+          54.9333,
+          8.9
+        ],
+        [
+          "lost",
+          "PrePaid",
+          43.3333,
+          0.0,
+          -43.3333
+        ],
+        [
+          "new",
+          "PrePaid",
+          0.0,
+          57.6667,
+          57.6667
+        ]
+      ],
+      "adversarial": [
+        [
+          "8001",
+          "PrePaid",
+          37.0333,
+          41.5,
+          4.4667
+        ],
+        [
+          "8002",
+          "PrePaid",
+          55.3333,
+          48.1333,
+          -7.2
+        ],
+        [
+          "8003",
+          "PrePaid",
+          47.9333,
+          40.8333,
+          -7.1
+        ],
+        [
+          "8004",
+          "PrePaid",
+          45.9333,
+          49.3333,
+          3.4
+        ],
+        [
+          "8005",
+          "PrePaid",
+          41.4667,
+          52.3,
+          10.8333
+        ],
+        [
+          "8006",
+          "PrePaid",
+          47.4333,
+          52.2667,
+          4.8333
+        ],
+        [
+          "8007",
+          "PrePaid",
+          48.0667,
+          53.5,
+          5.4333
+        ],
+        [
+          "8008",
+          "PrePaid",
+          43.4667,
+          47.7667,
+          4.3
+        ],
+        [
+          "8009",
+          "PrePaid",
+          41.6667,
+          41.0333,
+          -0.6333
+        ],
+        [
+          "8010",
+          "PrePaid",
+          43.3667,
+          44.3667,
+          1.0
+        ],
+        [
+          "8011",
+          "PrePaid",
+          44.4,
+          50.3333,
+          5.9333
+        ],
+        [
+          "8012",
+          "PrePaid",
+          37.3333,
+          41.7667,
+          4.4333
+        ],
+        [
+          "8013",
+          "PrePaid",
+          48.0667,
+          42.5333,
+          -5.5333
+        ],
+        [
+          "8014",
+          "PrePaid",
+          46.0333,
+          54.9333,
+          8.9
+        ],
+        [
+          "large",
+          "PrePaid",
+          9000.0,
+          9000.01,
+          0.01
+        ],
+        [
+          "lost",
+          "PrePaid",
+          43.3333,
+          0.0,
+          -43.3333
+        ],
+        [
+          "new",
+          "PrePaid",
+          0.0,
+          57.6667,
+          57.6667
+        ]
+      ]
+    },
+    "source_paths": [
+      "bounded-aggregation.md"
+    ],
+    "reference_sql": {
+      "normal": "WITH p AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='previous' GROUP BY account_id,pay_type),c AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='current' GROUP BY account_id,pay_type),keys AS (SELECT account_id,pay_type FROM p UNION SELECT account_id,pay_type FROM c)\n SELECT k.account_id,k.pay_type,ROUND(COALESCE(p.v,0),4),ROUND(COALESCE(c.v,0),4),ROUND(COALESCE(c.v,0)-COALESCE(p.v,0),4) FROM keys k LEFT JOIN p USING(account_id,pay_type) LEFT JOIN c USING(account_id,pay_type) ORDER BY k.account_id,k.pay_type",
+      "boundary": "WITH p AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='previous' GROUP BY account_id,pay_type),c AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='current' GROUP BY account_id,pay_type),keys AS (SELECT account_id,pay_type FROM p UNION SELECT account_id,pay_type FROM c)\n SELECT k.account_id,k.pay_type,ROUND(COALESCE(p.v,0),4),ROUND(COALESCE(c.v,0),4),ROUND(COALESCE(c.v,0)-COALESCE(p.v,0),4) FROM keys k LEFT JOIN p USING(account_id,pay_type) LEFT JOIN c USING(account_id,pay_type) ORDER BY k.account_id,k.pay_type",
+      "adversarial": "WITH p AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='previous' GROUP BY account_id,pay_type),c AS (SELECT account_id,pay_type,SUM(usage)/30.0 AS v FROM period_usage WHERE period='current' GROUP BY account_id,pay_type),keys AS (SELECT account_id,pay_type FROM p UNION SELECT account_id,pay_type FROM c)\n SELECT k.account_id,k.pay_type,ROUND(COALESCE(p.v,0),4),ROUND(COALESCE(c.v,0),4),ROUND(COALESCE(c.v,0)-COALESCE(p.v,0),4) FROM keys k LEFT JOIN p USING(account_id,pay_type) LEFT JOIN c USING(account_id,pay_type) ORDER BY k.account_id,k.pay_type"
+    }
+  },
+  "ANA-06": {
+    "variant": null,
+    "operation": null,
+    "expected_decision": {
+      "sql": null,
+      "can_publish_top5": false,
+      "complete_coverage": false,
+      "can_invent_offset_pagination": false
+    },
+    "expected_by_fixture": null,
+    "source_paths": [
+      "bounded-aggregation.md"
+    ]
+  },
+  "ANA-07": {
+    "variant": null,
+    "operation": null,
+    "expected_decision": {
+      "sql": null,
+      "eip_usage_change_supported": false,
+      "eip_top10_formally_defined": false
+    },
+    "expected_by_fixture": null,
+    "source_paths": [
+      "scope.md"
+    ]
+  },
+  "ANA-08": {
+    "variant": null,
+    "operation": null,
+    "expected_decision": {
+      "sql": null,
+      "vke_account_equals_main_customer": false,
+      "subscription_mrr_confirmed": false
+    },
+    "expected_by_fixture": null,
+    "source_paths": [
+      "scope.md",
+      "bounded-aggregation.md"
+    ]
+  }
+}

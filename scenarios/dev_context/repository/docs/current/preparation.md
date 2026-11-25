@@ -1,0 +1,3 @@
+# Request preparation contract — APPROVED, revision 3
+The defaults are process-wide configuration, not per-request mutable state. Each request must own a fresh header/query mapping. Header overrides match case-insensitively; an override value of None removes that header for this request. Keep unrelated defaults. Caller mappings and global defaults remain unchanged.
+Query overrides replace defaults by exact key. None removes the key for this request. A list value produces repeated query parameters in list order. Spaces use standard application/x-www-form-urlencoded encoding. Preparing a second request must not inherit overrides from the first.

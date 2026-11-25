@@ -1,0 +1,204 @@
+# metrics/cloud-operations/gpu/resource/gpu_usage_base.yaml
+
+原始路径：metrics/cloud-operations/gpu/resource/gpu_usage_base.yaml
+
+### id
+
+```text
+gpu_usage_base
+```
+### version
+
+```text
+1.0
+```
+### status
+
+```text
+collected
+```
+### definition
+
+```text
+GPU 用量基础明细，按天保留 account_id 和 instance_gpu_num，用于衍生指标复用。
+```
+### contract.status
+
+```text
+unresolved
+```
+### contract.unit
+
+```json
+null
+```
+### contract.grain
+
+```json
+null
+```
+### contract.time_window
+
+```json
+null
+```
+### contract.numerator
+
+```json
+null
+```
+### contract.denominator
+
+```json
+null
+```
+### contract.aggregation
+
+```json
+null
+```
+### contract.filters
+
+```json
+null
+```
+### contract.null_and_zero_policy
+
+```json
+null
+```
+### contract.note
+
+```text
+原定义与 SQL 已保留；上述结构化契约需逐项核验，不从名称自动推断。
+```
+### dataset_refs[0].id
+
+```text
+aeolus_app_556078_dataset_gpu
+```
+### dataset_refs[0].file
+
+```text
+../../../../dataset/aeolus/aeolus_app_556078_dataset_gpu.yaml
+```
+### dataset_candidates
+
+```json
+[]
+```
+### depends_on
+
+```json
+[]
+```
+### implementation.hints
+
+```text
+统一封装 GPU 用量筛选口径，供资源规模、TopN占比等指标复用。
+```
+### implementation.sql_templates[0].engine
+
+```text
+hsql
+```
+### implementation.sql_templates[0].template
+
+```text
+SELECT
+  p_date,
+  account_id,
+  `客户简称(扩展MLP)` AS customer_short_name,
+  CAST(instance_gpu_num AS Float64) AS instance_gpu_num
+FROM `gpu`
+WHERE p_date BETWEEN '${start_date}' AND '${end_date}'
+  AND pay_type IN ('PostPaid', 'PrePaid', 'Spot')
+  AND (account_tag = '外部账号' OR income_type IN ('外部收入', '内部收入-外') OR account_id = '9993')
+  AND p_hour = '23'
+  AND instance_gpu_model IN (
+    'AMD MI308x-192G', 'AMD MI308x-192G-80CU', 'Bytedance jiuhuashan',
+    'CAMBRICON MLU580X6', 'CAMBRICON MLU590 M9DK', 'FF40', 'FF45D',
+    'HUAWEI Ascend 910b', 'HUAWEI Ascend 910c', 'Iluvatar BI-V150',
+    'NVIDIA A10', 'NVIDIA A30', 'NVIDIA A40',
+    'NVIDIA A800-SXM4-40GB', 'NVIDIA A800-SXM4-80GB',
+    'NVIDIA GeForce RTX 4090', 'NVIDIA GeForce RTX 4090 D',
+    'NVIDIA H100-SXM5-80GB', 'NVIDIA H20-3e',
+    'NVIDIA H20-SXM5-96GB', 'NVIDIA H800-SXM5-80GB',
+    'NVIDIA L20', 'NVIDIA L4', 'NVIDIA L40', 'NVIDIA L40S',
+    'NVIDIA V100-PCIE-32GB', 'Tesla A100 80G', 'Tesla T4', 'Tesla V100',
+    '4090', '4090D', '910b', 'A10', 'A100', 'A30', 'A800',
+    'H100', 'H20', 'L20', 'L4', 'NVIDIA T4', 'T4', 'V100'
+  )
+  AND product IN ('GPU Compute Service', 'GPU云服务器', '机器学习平台-公有云', '高性能计算GPU云服务器', '云服务器')
+
+```
+### implementation.context_refs[0].id
+
+```text
+gpu_ops_ontology
+```
+### implementation.context_refs[0].file
+
+```text
+../../../_context/cloud-operations/gpu/gpu_ops_ontology.yaml
+```
+### usage_notes
+
+```text
+当前仅登记于 `云基础核心运营 - GPU` 领域
+```
+### kind
+
+```text
+metric
+```
+### name
+
+```text
+GPU用量基础明细
+```
+### category
+
+```text
+usage-and-resource
+```
+### owner
+
+```text
+unassigned
+```
+### phrases[0]
+
+```text
+GPU用量基础明细
+```
+### provenance.decision
+
+```text
+inherited
+```
+### provenance.source
+
+```text
+metric_context:gpu_ops_ontology
+```
+### provenance.locator
+
+```text
+semantics.metrics[id=gpu_usage_base]
+```
+### provenance.migration_source_sha256
+
+```text
+11d1940e6d9fa0db92f7631a743eed1205735f9cb631272862fb80af916659fa
+```
+### provenance.migration_input
+
+```text
+metrics/usage-and-resource.md
+```
+### provenance.migration_input_sha256
+
+```text
+cb77a0bb32a74b24a9885b7a04965e867975c80331ce7e628999bd9516555dcd
+```

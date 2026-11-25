@@ -1,0 +1,56 @@
+{
+  "QA-09": {
+    "expected": {
+      "old_url_valid": false,
+      "archive_retained": false,
+      "reissue_old_archive": false,
+      "new_export_operation_required": true
+    },
+    "source_paths": [
+      "products/BorealDocs/20_exports_current.md",
+      "shared/02_content_lifecycle.md"
+    ]
+  },
+  "QA-10": {
+    "expected": {
+      "page_overage_charge": 1.625,
+      "currency": "USD",
+      "approved_bulk_export_charge": null,
+      "page_rate_applies_to_export_count": false
+    },
+    "source_paths": [
+      "products/AsterDesk/40_price_current.md",
+      "products/AsterDesk/50_decision_session.md",
+      "shared/00_authority.md"
+    ]
+  },
+  "QA-11": {
+    "expected": {
+      "page_overage_charge": 1.275,
+      "currency": "EUR",
+      "bulk_export_charge": null,
+      "outage_credit": null,
+      "action_item_establishes_price": false
+    },
+    "source_paths": [
+      "products/BorealDocs/40_price_current.md",
+      "products/BorealDocs/50_decision_session.md",
+      "shared/00_authority.md"
+    ]
+  },
+  "QA-12": {
+    "expected": {
+      "reset_restore_window": false,
+      "audit_reconstructs_body": false,
+      "old_url_valid": false,
+      "archive_retained": true,
+      "archive_download_action": "reauthorize_and_reissue"
+    },
+    "source_paths": [
+      "products/BorealDocs/30_lifecycle_current.md",
+      "products/BorealDocs/20_exports_current.md",
+      "shared/02_content_lifecycle.md",
+      "shared/01_access_and_export.md"
+    ]
+  }
+}

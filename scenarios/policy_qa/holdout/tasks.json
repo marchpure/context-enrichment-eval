@@ -1,0 +1,52 @@
+[
+  {
+    "id": "QA-09",
+    "archive_id": "Q2b",
+    "question": "BorealDocs归档于2026-11-10 10:00创建，链接同日12:00签发；2026-11-17 09:00申请重开旧链接。当前全部导出门禁满足。判断旧链接、旧归档是否还可用，能否只重签链接，以及是否需要新建导出操作。时间均Asia/Shanghai。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "old_url_valid",
+      "archive_retained",
+      "reissue_old_archive",
+      "new_export_operation_required"
+    ]
+  },
+  {
+    "id": "QA-10",
+    "archive_id": "Q5a",
+    "question": "AsterDesk本月处理8250页。财务同时要求报出本月页处理超额费，以及导出12000份文档的批量导出价格。有人建议直接将页处理单价用到导出文档数量。给出超额费及币种，判断是否有获批的批量导出金额，以及该替代计费方式是否有依据。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "page_overage_charge",
+      "currency",
+      "approved_bulk_export_charge",
+      "page_rate_applies_to_export_count"
+    ]
+  },
+  {
+    "id": "QA-11",
+    "archive_id": "Q5b",
+    "question": "BorealDocs本月处理9750页，客户要求报出超额费、批量导出费和本次故障赔偿额。会议记录仅说财务将研究批量导出价格。按已有资料给出可确定的金额和币种，其余无获批依据时返回null；判断会议行动项是否已经建立生效价格。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "page_overage_charge",
+      "currency",
+      "bulk_export_charge",
+      "outage_credit",
+      "action_item_establishes_price"
+    ]
+  },
+  {
+    "id": "QA-12",
+    "archive_id": "Q6b",
+    "question": "BorealDocs迁移：文档11月2日09:00删除后法律保全，11月20日09:00解除保全；用户声称从解除时重获完整恢复窗口，并可用仍保留的审计事件重建正文。另一个导出归档于11月16日08:00创建并签发链接，11月20日09:00时权限与审批全部满足。判断恢复窗口是否重置、审计能否重建、旧URL能否使用、归档是否仍保留；处理归档下载应选择deny、reuse_url或reauthorize_and_reissue。",
+    "response_contract": "输出JSON：decision包含所列字段；evidence为[{path,quote,fields}]，quote必须是实际读取证据中的逐字片段；explanation用自然语言解释必要条件、适用范围与下一步。unknown用null。 missing_gates如适用，使用门禁ID数组：admin、all_acls、security、audit、dpo；支持套餐名使用Enterprise、Business、Basic。引文必须为连续原文；需要多个不连续片段时分开列出，不得拼接为一条引文。",
+    "answer_fields": [
+      "reset_restore_window",
+      "audit_reconstructs_body",
+      "old_url_valid",
+      "archive_retained",
+      "archive_download_action"
+    ]
+  }
+]
